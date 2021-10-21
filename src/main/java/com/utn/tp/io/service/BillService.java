@@ -35,4 +35,9 @@ public class BillService {
     public List<Bill> getBetweenDate(Date from, Date to) {
         return this.billRepository.findByDateBetween(from,to);
     }
+
+    public void deleteById(Integer id) {
+        this.billRepository.deleteById(id);
+    }
+
 }

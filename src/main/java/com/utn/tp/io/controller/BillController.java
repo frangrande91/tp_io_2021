@@ -50,4 +50,10 @@ public class BillController {
         return ResponseEntity.created(URI.create("/bill/"+billCreated.getId())).build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+        billService.deleteById(id);
+        return ResponseEntity.accepted().build();
+    }
+
 }
