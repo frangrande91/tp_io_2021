@@ -4,6 +4,11 @@ import com.utn.tp.io.model.Bill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+import java.util.List;
+
 @Repository
 public interface BillRepository extends JpaRepository<Bill,Integer> {
+    List<Bill> findByDateBetween(Date from, Date to);
+
 }
