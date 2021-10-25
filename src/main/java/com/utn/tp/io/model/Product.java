@@ -17,6 +17,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_product")
     private Integer id;
 
     @NotBlank(message = "The scan code cannot be null or whitespace.")
