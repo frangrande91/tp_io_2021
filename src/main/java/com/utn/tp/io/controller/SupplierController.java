@@ -25,7 +25,7 @@ public class SupplierController {
     }
 
     @PostMapping("/")
-    public ResponseEntity addSupplier(@RequestBody Supplier supplier){
+    public ResponseEntity<Object> addSupplier(@RequestBody Supplier supplier){
         Supplier newSupplier = supplierService.add(supplier);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -41,7 +41,7 @@ public class SupplierController {
         return response(page);
     }
 
-    private ResponseEntity response(Page page) {
+    private ResponseEntity<List<Supplier>> response(Page page) {
 
         HttpStatus httpStatus = page.getContent().isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
         return ResponseEntity.

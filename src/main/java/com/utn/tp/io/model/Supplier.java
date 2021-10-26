@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.Date;
 
 @Data
 @Entity
@@ -30,7 +31,7 @@ public class Supplier {
 
     @Positive(message = "The phone Number should be positive.")
     @NotBlank(message = "The phoneNumber cannot be null or whitespace.")
-    private Integer phoneNumer;
+    private Integer phoneNumber;
 
     private boolean isPresale; //If it is presale is true else false;
 
@@ -38,4 +39,9 @@ public class Supplier {
     @NotNull(message = "The lead time cannot be null.")
     private Integer leadTime;
 
+    @Positive(message = "The lead time should be positive.")
+    @NotNull(message = "The lead time cannot be null.")
+    private Integer reviewPeriod;
+
+    private Date lastReview;
 }

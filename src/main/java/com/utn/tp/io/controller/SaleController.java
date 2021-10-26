@@ -16,7 +16,7 @@ import java.net.URI;
 @RequestMapping("/sales")
 public class SaleController {
 
-    private SaleService saleService;
+    private final SaleService saleService;
 
     @Autowired
     public SaleController (SaleService saleService){

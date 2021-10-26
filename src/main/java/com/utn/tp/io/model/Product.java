@@ -24,15 +24,13 @@ public class Product {
     @Column(unique = true)
     private String scan;
 
-    @NotBlank(message = "The name cannot be null or whitespace.")
-    private String name;
-
     @NotBlank(message = "The model cannot be null or whitespace.")
     private String model;
 
     private String description;
 
-    //private Supplier supplier;
+    @ManyToOne
+    private Supplier supplier;
 
     @PositiveOrZero(message = "The cost should be positive or zero.")
     @NotNull(message = "The cost cannot be null.")
