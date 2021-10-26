@@ -42,10 +42,6 @@ public class Product {
     @NotNull(message = "The stock cannot be null.")
     private Integer stock;
 
-    @Positive(message = "The lead time should be positive.")
-    @NotNull(message = "The lead time cannot be null.")
-    private Integer leadTime;
-
     @NotNull(message = "The model type must be specified. It cannot be null.")
     private ModelType modelType;
 

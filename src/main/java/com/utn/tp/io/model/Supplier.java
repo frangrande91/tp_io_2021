@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Data
 @Entity
@@ -21,10 +23,19 @@ public class Supplier {
 
     @Id
     @GeneratedValue(strategy  = GenerationType.IDENTITY)
-
     private Integer id;
-    @NotBlank(message = "The model cannot be null or whitespace.")
+
+    @NotBlank(message = "The name cannot be null or whitespace.")
     private String name;
-    @NotBlank(message = "The model cannot be null or whitespace.")
+
+    @Positive(message = "The phone Number should be positive.")
+    @NotBlank(message = "The phoneNumber cannot be null or whitespace.")
     private Integer phoneNumer;
+
+    private boolean isPresale; //If it is presale is true else false;
+
+    @Positive(message = "The lead time should be positive.")
+    @NotNull(message = "The lead time cannot be null.")
+    private Integer leadTime;
+
 }
