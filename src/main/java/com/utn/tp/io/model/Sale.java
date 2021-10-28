@@ -18,7 +18,7 @@ public class Sale {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_sale")
+    /*@Column(name = "id_sale")*/
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)

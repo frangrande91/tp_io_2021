@@ -43,8 +43,6 @@ public class SaleController {
     public ResponseEntity<String> addProductToSale(@PathVariable Integer id, @PathVariable Integer idProduct){
         Sale sale = this.saleService.addProductToSale(id, idProduct);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("The sale has been modified");
-
-
     }
 
     @DeleteMapping("/{id}")

@@ -15,11 +15,10 @@ import javax.validation.constraints.Positive;
 import java.util.Date;
 
 @Data
-@Entity
+@Entity(name = "suppliers")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class Supplier {
 
     @Id

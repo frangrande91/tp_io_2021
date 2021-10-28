@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/product")
 public class ProductController {
 
     private final ProductService productService;
@@ -56,13 +56,13 @@ public class ProductController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{scan}")
+    @PutMapping("/stock/{scan}")
     public ResponseEntity<Object> updateStock(@PathVariable String scan, @RequestBody Integer movement){
         productService.updateStock(scan, movement);
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping("/{scan}")
+    @PutMapping("/recalculation/parameters/{scan}")
     public ResponseEntity<Object> recalculationParameters(@PathVariable String scan){
         productService.updateLastDays(scan,30);
         return ResponseEntity.accepted().build();

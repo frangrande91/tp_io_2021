@@ -4,6 +4,7 @@ import com.utn.tp.io.model.Product;
 import com.utn.tp.io.model.Sale;
 import com.utn.tp.io.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -21,7 +22,7 @@ public class ProductService {
     private final SaleService saleService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, SaleService saleService) {
+    public ProductService(ProductRepository productRepository, @Lazy SaleService saleService) {
         this.productRepository = productRepository;
         this.saleService = saleService;
     }

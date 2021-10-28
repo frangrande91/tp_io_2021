@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/suppliers")
+@RequestMapping("/supplier")
 public class SupplierController {
 
     private final SupplierService supplierService;

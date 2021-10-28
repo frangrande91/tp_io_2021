@@ -4,6 +4,7 @@ import com.utn.tp.io.model.Product;
 import com.utn.tp.io.model.Sale;
 import com.utn.tp.io.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -16,7 +17,7 @@ public class SaleService {
     private final ProductService productService;
 
     @Autowired
-    public SaleService(SaleRepository saleRepository, ProductService productService){
+    public SaleService(SaleRepository saleRepository, @Lazy ProductService productService){
         this.saleRepository = saleRepository;
         this.productService = productService;
     }
