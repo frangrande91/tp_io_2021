@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/supplier")
+@RequestMapping("/api/supplier")
 public class SupplierController {
 
     private final SupplierService supplierService;
@@ -35,7 +35,7 @@ public class SupplierController {
         return new ResponseEntity<>(location,(HttpStatus.CREATED));
     }
 
-    @GetMapping()
+    @GetMapping("/")
     public ResponseEntity<List<Supplier>> allSuppliers(Pageable pageable) {
         Page page = supplierService.getAll(pageable);
         return response(page);
