@@ -1,6 +1,7 @@
 package com.utn.tp.io.service;
 
 import com.utn.tp.io.model.Bill;
+import com.utn.tp.io.model.Sale;
 import com.utn.tp.io.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,14 +14,23 @@ import java.util.List;
 @Service
 public class BillService {
 
-    public BillRepository billRepository;
+    private final BillRepository billRepository;
+    private final ProductService productService;
+    private final SaleService saleService;
 
     @Autowired
-    public BillService(BillRepository billRepository) {
+    public BillService(BillRepository billRepository, ProductService productService, SaleService saleService) {
         this.billRepository = billRepository;
+        this.productService = productService;
+        this.saleService = saleService;
     }
 
     public Bill add(Bill bill) {
+        List<Sale> saleList = bill.getSales();
+        for(Sale s : saleList) {
+            saleService.add(s);
+            productService.updateStock(s.getProduct().getScan(),s.getQuantity()*(-1));
+        }
         return this.billRepository.save(bill);
     }
 

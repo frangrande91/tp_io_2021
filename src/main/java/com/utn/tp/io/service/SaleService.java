@@ -6,11 +6,14 @@ import com.utn.tp.io.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class SaleService {
 
-    private SaleRepository saleRepository;
-    private ProductService productService;
+    private final SaleRepository saleRepository;
+    private final ProductService productService;
 
     @Autowired
     public SaleService(SaleRepository saleRepository, ProductService productService){
@@ -20,6 +23,10 @@ public class SaleService {
 
     public Sale getById(Integer id) {
         return this.saleRepository.getById(id);
+    }
+
+    public List<Sale> getBetweenDatesAndProduct(Date from, Date to, Product product) {
+        return saleRepository.findAllByDateBetweenAndProduct(from,to,product);
     }
 
     public Sale add(Sale sale) {
@@ -36,6 +43,5 @@ public class SaleService {
     public void delete(Integer id) {
         this.saleRepository.deleteById(id);
     }
-
 
 }

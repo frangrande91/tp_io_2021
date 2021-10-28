@@ -22,13 +22,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity createProduct(@RequestBody Product product) throws Exception {
+    public ResponseEntity<Object> createProduct(@RequestBody Product product) throws Exception {
         Product p = productService.add(product);
 
-        if(p.getModelType() == ModelType.P_MODEL && p.getReviewPeriod() == null)
+        /*if(p.getModelType() == ModelType.P_MODEL && p.getReviewPeriod() == null)
             throw new Exception("Model P requires a review period to be specified.");
         else if (p.getModelType() == ModelType.Q_MODEL && p.getReviewPeriod() == null)
-            throw new Exception("Model Q requires a reorder point to be specified.");       //Is required because is a new product, then is automatically recalculated
+            throw new Exception("Model Q requires a reorder point to be specified."); */      //Is required because is a new product, then is automatically recalculated
 
         return ResponseEntity.created(
                 URI.create("/product/" + p.getId()))
@@ -51,14 +51,20 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteProduct(@PathVariable Integer id){
+    public ResponseEntity<Object> deleteProduct(@PathVariable Integer id){
         productService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{scan}")
-    public ResponseEntity updateStock(@PathVariable String scan, @RequestBody Integer movement){
+    public ResponseEntity<Object> updateStock(@PathVariable String scan, @RequestBody Integer movement){
         productService.updateStock(scan, movement);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping("/{scan}")
+    public ResponseEntity<Object> recalculationParameters(@PathVariable String scan){
+        productService.updateLastDays(scan,30);
         return ResponseEntity.accepted().build();
     }
 
