@@ -2,6 +2,7 @@ package com.utn.tp.io.service;
 
 import com.utn.tp.io.model.Product;
 import com.utn.tp.io.model.Sale;
+import com.utn.tp.io.model.Supplier;
 import com.utn.tp.io.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -9,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,11 +21,13 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final SaleService saleService;
+    private final SupplierService supplierService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, @Lazy SaleService saleService) {
+    public ProductService(ProductRepository productRepository, @Lazy SaleService saleService, SupplierService supplierService) {
         this.productRepository = productRepository;
         this.saleService = saleService;
+        this.supplierService = supplierService;
     }
 
     public List<Product> getAll() {
@@ -79,5 +82,36 @@ public class ProductService {
         product.setReorderPoint(reorderPoint);
 
         this.productRepository.save(product);
+    }
+
+    public List<Product> getBySupplier(Integer idSupplier){
+        List<Product> products = new ArrayList<>();
+        for (Product p : this.getAll()) {
+            if(p.getSupplier().getId().equals(idSupplier)){
+                products.add(p);
+            }
+        }
+        return products;
+    }
+
+
+    public List<Product> getToCheck(){
+        List<Supplier> revisionSuppliers = new ArrayList<Supplier>();
+        List<Product> productsToCheck = new ArrayList<>();
+
+        //Guardo en una lista a todos los proveedores que están en período de revision
+        for(Supplier s : supplierService.getAll()){
+            if(s.isRevisonPeriod()){
+                revisionSuppliers.add(s);
+            }
+        }
+
+        //Guardo en una lista a todos los productos que pertenecen a un proveedor que está en período de revisión
+        for(Product p : this.getAll()){
+            if(revisionSuppliers.contains(p.getSupplier())){
+                productsToCheck.add(p);
+            }
+        }
+        return productsToCheck;
     }
 }

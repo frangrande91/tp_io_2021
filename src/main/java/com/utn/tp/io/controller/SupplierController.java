@@ -36,9 +36,8 @@ public class SupplierController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Supplier>> allSuppliers(Pageable pageable) {
-        Page page = supplierService.getAll(pageable);
-        return response(page);
+    public ResponseEntity<List<Supplier>> allSuppliers() {
+        return ResponseEntity.ok(supplierService.getAll());
     }
 
     private ResponseEntity<List<Supplier>> response(Page page) {
@@ -61,4 +60,5 @@ public class SupplierController {
     public ResponseEntity<?> deleteSupplier(@PathVariable(name = "id") Integer id) {
             return supplierService.deleteById(id);
     }
+
 }

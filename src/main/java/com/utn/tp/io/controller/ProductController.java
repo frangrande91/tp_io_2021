@@ -73,4 +73,17 @@ public class ProductController {
         productService.updateProduct(id, product);
         return ResponseEntity.accepted().build();
     }*/
+
+    @GetMapping("/supplier/{idSupplier}")
+    public ResponseEntity<List<Product>> getProductsBySupplier(@PathVariable Integer idSupplier){
+        return ResponseEntity.ok(productService.getBySupplier(idSupplier));
+    }
+
+    //Retorna una lista de los productos que están en periodo de revision
+    @GetMapping("/check")
+    public ResponseEntity<List<Product>> getToCheck(){
+        return ResponseEntity.ok(productService.getToCheck());
+    }
+
+
 }
