@@ -58,6 +58,7 @@ public class Product {
     private Double avgDemand;      //Average demand
     private Double disDemand;      //Dispersion of demand
     private Double reorderPoint;   //If modelType is Q this should be != NULL
+    private ZoneProduct zone;
 
     public static Double calculateReorderPoint(Product product) {
         Double Q = Math.sqrt(((2*product.getAvgDemand()* product.getCostOfPreparing())/product.getStorageCost()));

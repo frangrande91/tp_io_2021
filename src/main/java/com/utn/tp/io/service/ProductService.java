@@ -1,19 +1,22 @@
 package com.utn.tp.io.service;
 
+import com.sun.source.tree.Tree;
+import com.utn.tp.io.model.ModelType;
 import com.utn.tp.io.model.Product;
 import com.utn.tp.io.model.Sale;
+import com.utn.tp.io.model.ZoneProduct;
 import com.utn.tp.io.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -79,5 +82,81 @@ public class ProductService {
         product.setReorderPoint(reorderPoint);
 
         this.productRepository.save(product);
+    }
+
+    public void determinateZoneABC(){
+
+        List<Product> products = getAll();
+
+        //TreeMaps para que las inserciones sean ordenadas me menor a mayor
+        TreeMap<Double, Product> cavPerProduct = new TreeMap<>();
+        Map.Entry<Double, Product> pair = null;
+        TreeMap<Double, Product> percentProduct = new TreeMap<>();
+        Product p;
+        Double cava = 0D;
+        Double aux = 0D;
+
+        //Calculo del CAV de cada producto y CAVA
+        for(Product product : products){
+            cava = cava + product.getCostUnit() * product.getAvgDemand();
+            cavPerProduct.put(product.getCostUnit() * product.getAvgDemand() * 300, product);   //Calculo CAV
+        }
+
+        //Calculo del porcentaje de cada producto sobre el CAVA
+        while (cavPerProduct.size() > 0) {
+            pair = cavPerProduct.pollLastEntry();       //Retorna el último elemento (mayor) y lo elimina
+            percentProduct.put((pair.getKey()/cava) * 100, pair.getValue());
+        }
+
+        //Clasificación de cada producto
+        while (percentProduct.size() > 0) {
+            pair = percentProduct.pollLastEntry();
+
+            if (aux < 0.85){        //Los productos que representan el 85% del CAVA pertenecen a la zona A
+
+                p = pair.getValue();
+                p.setZone(ZoneProduct.ZONE_A);
+                productRepository.save(p);
+                aux = aux + pair.getKey();
+
+            }else if (aux < 0.90){  //%5 porciento a la zona B
+
+                p = pair.getValue();
+                p.setZone(ZoneProduct.ZONE_B);
+                productRepository.save(p);
+                aux = aux + pair.getKey();
+
+            }else{                 //%10 restante a la zona C
+                p = pair.getValue();
+                p.setZone(ZoneProduct.ZONE_C);
+                productRepository.save(p);
+            }
+        }
+    }
+
+    public ModelType suggestedModel(Integer id){
+        Product p = getById(id);
+        p.getZone();
+        if (p.getZone() == ZoneProduct.ZONE_C || (p.getZone() == null && p.getSupplier().isPresale()) ) {
+            return ModelType.P_MODEL;
+        }
+        return ModelType.Q_MODEL;
+    }
+
+    public void updateProduct(Integer id, Product upd) {
+        Product p = getById(id);
+
+        p.setScan(upd.getScan());
+        p.setModel(upd.getModel());
+        p.setDescription(upd.getDescription());
+        p.setSupplier(upd.getSupplier());
+        p.setCostUnit(upd.getCostUnit());
+        p.setStock(upd.getStock());
+        p.setModelType(upd.getModelType());
+        p.setServiceLevel(upd.getServiceLevel());
+        p.setAvgDemand(upd.getAvgDemand());
+        p.setDisDemand(upd.getAvgDemand());
+        p.setReorderPoint(upd.getReorderPoint());
+        productRepository.save(p);
     }
 }
