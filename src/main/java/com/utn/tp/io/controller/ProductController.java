@@ -70,7 +70,7 @@ public class ProductController {
 
     @GetMapping("/suggestModel/{id}")
     public ResponseEntity<Object> suggestedModel(@PathVariable Integer id){
-        productService.suggestModel(id);
+        productService.suggestedModel(id);
         return ResponseEntity.ok().build();
     }
 
