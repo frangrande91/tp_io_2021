@@ -29,8 +29,8 @@ public class SupplierService {
         return supplierRepository.save(supplier);
     }
 
-    public Page<Supplier> getAll(Pageable pageable){
-        return supplierRepository.findAll(pageable);
+    public List<Supplier> getAll(){
+        return supplierRepository.findAll();
     }
 
     public Supplier getById(Integer id) {

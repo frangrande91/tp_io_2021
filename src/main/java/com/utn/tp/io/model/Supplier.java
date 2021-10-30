@@ -5,6 +5,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
+import com.utn.tp.io.exception.SupplierNotExistsException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @Data
 @Entity(name = "suppliers")
@@ -43,4 +47,21 @@ public class Supplier {
     private Integer reviewPeriod;
 
     private Date lastReview;
+
+    //Retorna true si es momento de hacer la revisión
+    public Boolean isRevisonPeriod(){
+
+        if(this.isPresale) {
+            //Calcula la fecha de hoy
+            Date now = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            //Calculo la cantidad de días entre la fecha actual y la fecha de la última revisión
+            long diffInMillies = Math.abs(now.getTime() - this.lastReview.getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+            return this.reviewPeriod - (int) diff > 0;
+        }
+        else
+            return false;
+    }
 }

@@ -68,9 +68,27 @@ public class ProductController {
         return ResponseEntity.accepted().build();
     }
 
-/*    @PutMapping("/{id}")
-    public ResponseEntity updateProduct(@PathVariable Integer id, @RequestBody Product product){
+    @GetMapping("/suggestModel/{id}")
+    public ResponseEntity<Object> suggestedModel(@PathVariable Integer id){
+        productService.suggestedModel(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateProduct(@PathVariable Integer id, @RequestBody Product product) {
         productService.updateProduct(id, product);
         return ResponseEntity.accepted().build();
-    }*/
+    }
+
+    @GetMapping("/supplier/{idSupplier}")
+    public ResponseEntity<List<Product>> getProductsBySupplier(@PathVariable Integer idSupplier){
+        return ResponseEntity.ok(productService.getBySupplier(idSupplier));
+    }
+
+    //Retorna una lista de los productos que están en periodo de revision
+    @GetMapping("/check")
+    public ResponseEntity<List<Product>> getToCheck(){
+        return ResponseEntity.ok(productService.getToCheck());
+    }
+
 }
