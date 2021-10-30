@@ -40,12 +40,12 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Product> getById(@PathVariable Integer id){
         return ResponseEntity.ok(productService.getById(id));
     }
 
-    @GetMapping("/{scan}")
+    @GetMapping("/scan/{scan}")
     public ResponseEntity<Product> getByScan(@PathVariable String scan){
         return ResponseEntity.ok(productService.getByScan(scan));
     }

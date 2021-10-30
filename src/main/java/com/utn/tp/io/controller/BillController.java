@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/bill")
+@RequestMapping("/api//bill")
 public class BillController {
 
     private final BillService billService;

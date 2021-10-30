@@ -13,7 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/sales")
+@RequestMapping("/api/sales")
 public class SaleController {
 
     private final SaleService saleService;
