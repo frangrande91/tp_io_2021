@@ -13,10 +13,10 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/sales")
+@RequestMapping("/api/sales")
 public class SaleController {
 
-    private SaleService saleService;
+    private final SaleService saleService;
 
     @Autowired
     public SaleController (SaleService saleService){
@@ -50,14 +50,4 @@ public class SaleController {
         this.saleService.delete(id);
         return ResponseEntity.accepted().build();
     }
-
-
-    /*(MODELO Q) Verificar al momento de la factura si el stock llega al punto de reorden para notificar*/
-    @PutMapping("/{id}/product/{id}")
-    public ResponseEntity<String> addProductToSaleAndVerify(@PathVariable Integer id, @PathVariable Integer idProduct){
-        Sale sale = this.saleService.addProductToSaleVerify(id, idProduct);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("The sale has been modified");
-    }
-
-
 }

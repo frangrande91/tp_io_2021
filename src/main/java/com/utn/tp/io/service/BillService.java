@@ -1,6 +1,8 @@
 package com.utn.tp.io.service;
 
 import com.utn.tp.io.model.Bill;
+import com.utn.tp.io.model.Product;
+import com.utn.tp.io.model.Sale;
 import com.utn.tp.io.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,14 +15,23 @@ import java.util.List;
 @Service
 public class BillService {
 
-    public BillRepository billRepository;
+    private final BillRepository billRepository;
+    private final ProductService productService;
+    private final SaleService saleService;
 
     @Autowired
-    public BillService(BillRepository billRepository) {
+    public BillService(BillRepository billRepository, ProductService productService, SaleService saleService) {
         this.billRepository = billRepository;
+        this.productService = productService;
+        this.saleService = saleService;
     }
 
     public Bill add(Bill bill) {
+        List<Sale> saleList = bill.getSales();
+        for(Sale s : saleList) {
+            saleService.add(s);
+            productService.updateStock(s.getProduct().getScan(),s.getQuantity()*(-1));
+        }
         return this.billRepository.save(bill);
     }
 
@@ -40,4 +51,17 @@ public class BillService {
         this.billRepository.deleteById(id);
     }
 
+    public Boolean verify(Integer id){
+        Boolean flag= false;
+        Bill bill = this.billRepository.getById(id);
+        Sale sale= bill.getSales().get(bill.getSales().size()-1);
+        Product product= sale.getProduct();
+
+        if(product.getModelType().getName().equals("Q_MODEL")){
+            if(!(product.getStock()>product.getSupplier().getReviewPeriod())){
+                flag=true;
+            }
+        }
+        return flag;
+    }
 }

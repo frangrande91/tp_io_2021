@@ -9,7 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Data
-@Entity
+@Entity(name = "products")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,19 +24,25 @@ public class Product {
     @Column(unique = true)
     private String scan;
 
-    @NotBlank(message = "The name cannot be null or whitespace.")
-    private String name;
-
     @NotBlank(message = "The model cannot be null or whitespace.")
     private String model;
 
     private String description;
 
-    //private Supplier supplier;
+    @ManyToOne
+    private Supplier supplier;
 
     @PositiveOrZero(message = "The cost should be positive or zero.")
     @NotNull(message = "The cost cannot be null.")
     private Float costUnit;
+
+    @PositiveOrZero(message = "The cost of preparing should be positive or zero.")
+    @NotNull(message = "The cost of preparing cannot be null.")
+    private Float costOfPreparing;
+
+    @PositiveOrZero(message = "The cost of storage cost should be positive or zero.")
+    @NotNull(message = "The storage cost of preparing cannot be null.")
+    private Float storageCost;
 
     @PositiveOrZero(message = "The stock should be positive or zero.")
     @NotNull(message = "The stock cannot be null.")
@@ -46,11 +52,24 @@ public class Product {
     private ModelType modelType;
 
     @Positive(message = "The service level should be positive.")
-    @Max(value = 100, message = "The level service cannot be upper 100%.")
-    private Integer serviceLevel;
+    @Max(value = 1, message = "The level service cannot be upper 100%.")
+    private Double serviceLevel;
 
-    private Integer avgDemand;      //Average demand
-    private Integer disDemand;      //Dispersion of demand
-    private Integer reorderPoint;   //If modelType is Q this should be != NULL
-    private Integer reviewPeriod;   //If modelType is P this should be != NULL
+    private Double avgDemand;      //Average demand
+    private Double disDemand;      //Dispersion of demand
+    private Double reorderPoint;   //If modelType is Q this should be != NULL
+    private ZoneProduct zone;
+
+    public static Double calculateReorderPoint(Product product) {
+        Double Q = Math.sqrt(((2*product.getAvgDemand()* product.getCostOfPreparing())/product.getStorageCost()));
+        Double oL = Math.sqrt(product.getSupplier().getReviewPeriod()) * product.getDisDemand();
+        double eX = (1 - product.getServiceLevel())*(Q/oL);
+        double z = eX * (-1);
+        return z;
+    }
+
+
+
+
+
 }

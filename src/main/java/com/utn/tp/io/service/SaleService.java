@@ -4,22 +4,30 @@ import com.utn.tp.io.model.Product;
 import com.utn.tp.io.model.Sale;
 import com.utn.tp.io.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class SaleService {
 
-    private SaleRepository saleRepository;
-    private ProductService productService;
+    private final SaleRepository saleRepository;
+    private final ProductService productService;
 
     @Autowired
-    public SaleService(SaleRepository saleRepository, ProductService productService){
+    public SaleService(SaleRepository saleRepository, @Lazy ProductService productService){
         this.saleRepository = saleRepository;
         this.productService = productService;
     }
 
     public Sale getById(Integer id) {
         return this.saleRepository.getById(id);
+    }
+
+    public List<Sale> getBetweenDatesAndProduct(Date from, Date to, Product product) {
+        return saleRepository.findAllByDateBetweenAndProduct(from,to,product);
     }
 
     public Sale add(Sale sale) {
@@ -35,19 +43,5 @@ public class SaleService {
 
     public void delete(Integer id) {
         this.saleRepository.deleteById(id);
-    }
-
-    public Sale addProductToSaleVerify(Integer id, Integer idProduct) {
-        Sale sale = this.saleRepository.getById(id);
-        Product product = this.productService.getById(idProduct);
-
-        if(product.getModelType().getName().equals("Q_MODEL")){
-            if(!(product.getStock()>product.getReviewPeriod())){
-                System.out.println("ALERTA SE HA LLEGADO AL PUNTO DE REORDEN, SE NECESITA COMPRAR MAS MERCADERIA");
-            }
-            sale.setProduct(product);
-            this.saleRepository.save(sale);
-        }
-        return sale;
     }
 }

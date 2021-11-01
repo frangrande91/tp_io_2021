@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/suppliers")
+@RequestMapping("/api/supplier")
 public class SupplierController {
 
     private final SupplierService supplierService;
@@ -25,7 +25,7 @@ public class SupplierController {
     }
 
     @PostMapping("/")
-    public ResponseEntity addSupplier(@RequestBody Supplier supplier){
+    public ResponseEntity<Object> addSupplier(@RequestBody Supplier supplier){
         Supplier newSupplier = supplierService.add(supplier);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -35,13 +35,12 @@ public class SupplierController {
         return new ResponseEntity<>(location,(HttpStatus.CREATED));
     }
 
-    @GetMapping()
-    public ResponseEntity<List<Supplier>> allSuppliers(Pageable pageable) {
-        Page page = supplierService.getAll(pageable);
-        return response(page);
+    @GetMapping("/")
+    public ResponseEntity<List<Supplier>> allSuppliers() {
+        return ResponseEntity.ok(supplierService.getAll());
     }
 
-    private ResponseEntity response(Page page) {
+    private ResponseEntity<List<Supplier>> response(Page page) {
 
         HttpStatus httpStatus = page.getContent().isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
         return ResponseEntity.
