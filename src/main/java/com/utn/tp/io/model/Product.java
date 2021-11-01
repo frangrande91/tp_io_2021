@@ -42,7 +42,7 @@ public class Product {
     @NotNull(message = "The stock cannot be null.")
     private Integer stock;
 
-    @NotNull(message = "The model type must be specified. It cannot be null.")
+    //@NotNull(message = "The model type must be specified. It cannot be null.")
     private ModelType modelType;
 
     @Positive(message = "The service level should be positive.")

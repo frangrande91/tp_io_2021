@@ -37,5 +37,17 @@ public class SaleService {
         this.saleRepository.deleteById(id);
     }
 
+    public Sale addProductToSaleVerify(Integer id, Integer idProduct) {
+        Sale sale = this.saleRepository.getById(id);
+        Product product = this.productService.getById(idProduct);
 
+        if(product.getModelType().getName().equals("Q_MODEL")){
+            if(!(product.getStock()>product.getReviewPeriod())){
+                System.out.println("ALERTA SE HA LLEGADO AL PUNTO DE REORDEN, SE NECESITA COMPRAR MAS MERCADERIA");
+            }
+            sale.setProduct(product);
+            this.saleRepository.save(sale);
+        }
+        return sale;
+    }
 }

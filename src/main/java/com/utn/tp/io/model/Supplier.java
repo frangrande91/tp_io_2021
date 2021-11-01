@@ -32,10 +32,10 @@ public class Supplier {
     @NotBlank(message = "The phoneNumber cannot be null or whitespace.")
     private Integer phoneNumer;
 
-    private boolean isPresale; //If it is presale is true else false;
-
     @Positive(message = "The lead time should be positive.")
     @NotNull(message = "The lead time cannot be null.")
     private Integer leadTime;
+
+    private boolean isPresale; //If it is presale is true else false;
 
 }
