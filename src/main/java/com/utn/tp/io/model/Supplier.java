@@ -33,14 +33,14 @@ public class Supplier {
     private String name;
 
     @Positive(message = "The phone Number should be positive.")
-    @NotBlank(message = "The phoneNumber cannot be null or whitespace.")
+    @NotNull(message = "The phoneNumber cannot be null.")
     private Integer phoneNumber;
-
-    private boolean isPresale; //If it is presale is true else false;
 
     @Positive(message = "The lead time should be positive.")
     @NotNull(message = "The lead time cannot be null.")
     private Integer leadTime;
+
+    private Boolean isPresale; //If it is presale is true else false;
 
     @Positive(message = "The lead time should be positive.")
     @NotNull(message = "The lead time cannot be null.")

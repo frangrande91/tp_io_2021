@@ -60,5 +60,4 @@ public class SupplierController {
     public ResponseEntity<?> deleteSupplier(@PathVariable(name = "id") Integer id) {
             return supplierService.deleteById(id);
     }
-
 }

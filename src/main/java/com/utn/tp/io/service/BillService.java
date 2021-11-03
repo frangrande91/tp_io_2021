@@ -1,6 +1,7 @@
 package com.utn.tp.io.service;
 
 import com.utn.tp.io.model.Bill;
+import com.utn.tp.io.model.Product;
 import com.utn.tp.io.model.Sale;
 import com.utn.tp.io.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,4 +55,17 @@ public class BillService {
         return this.billRepository.findByLastId();
     }
 
+    public Boolean verify(Integer id){
+        Boolean flag= false;
+        Bill bill = this.billRepository.getById(id);
+        Sale sale= bill.getSales().get(bill.getSales().size()-1);
+        Product product= sale.getProduct();
+
+        if(product.getModelType().getName().equals("Q_MODEL")){
+            if(!(product.getStock()>product.getSupplier().getReviewPeriod())){
+                flag=true;
+            }
+        }
+        return flag;
+    }
 }

@@ -1,8 +1,10 @@
 package com.utn.tp.io.controller;
 
 import com.utn.tp.io.model.Bill;
+import com.utn.tp.io.model.Sale;
 import com.utn.tp.io.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
@@ -61,4 +63,17 @@ public class BillController {
         return ResponseEntity.accepted().build();
     }
 
+    /*(MODELO Q) Verificar al momento de la factura si el stock llega al punto de reorden para notificar*/
+    @GetMapping("/verify/{id}")
+    public ResponseEntity<String> verifyIfTheReviewPeriodArrived(@PathVariable Integer id){
+        boolean flag=this.billService.verify(id);
+        if(flag==true){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("\n" +
+                    "ALERT THE REORDER POINT HAS BEEN REACHED, WE NEED TO BUY MORE PRODUCTS");
+        }   
+        else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("\n" +
+                    "THE REORDER POINT HAS NOT YET BEEN REACHED");
+        }
+    }
 }

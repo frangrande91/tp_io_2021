@@ -44,5 +44,4 @@ public class SaleService {
     public void delete(Integer id) {
         this.saleRepository.deleteById(id);
     }
-
 }

@@ -179,7 +179,7 @@ public class ProductService {
     public ModelType suggestedModel(Integer id){
         Product p = getById(id);
         p.getZone();
-        if (p.getZone() == ZoneProduct.ZONE_C || (p.getZone() == null && p.getSupplier().isPresale()) ) {
+        if (p.getZone() == ZoneProduct.ZONE_C || (p.getZone() == null && p.getSupplier().getIsPresale()) ) {
             return ModelType.P_MODEL;
         }
         return ModelType.Q_MODEL;
