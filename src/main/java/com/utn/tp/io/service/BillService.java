@@ -50,4 +50,8 @@ public class BillService {
         this.billRepository.deleteById(id);
     }
 
+    public Bill getByLastId() {
+        return this.billRepository.findByLastId();
+    }
+
 }

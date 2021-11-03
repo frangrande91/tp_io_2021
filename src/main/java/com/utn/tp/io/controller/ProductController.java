@@ -56,8 +56,8 @@ public class ProductController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/stock/{scan}")
-    public ResponseEntity<Object> updateStock(@PathVariable String scan, @RequestBody Integer movement){
+    @PutMapping("/scan/{scan}/stock/{movement}")
+    public ResponseEntity<Object> updateStock(@PathVariable String scan, @PathVariable Integer movement){
         productService.updateStock(scan, movement);
         return ResponseEntity.accepted().build();
     }

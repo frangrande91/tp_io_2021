@@ -44,6 +44,11 @@ public class BillController {
         return ResponseEntity.ok(billList);
     }
 
+    @GetMapping("/lastId")
+    public ResponseEntity<Bill> getByLastId() {
+        return ResponseEntity.ok(this.billService.getByLastId());
+    }
+
     @PostMapping("/")
     public ResponseEntity<Object> add(@RequestBody Bill bill) {
         Bill billCreated = billService.add(bill);

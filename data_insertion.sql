@@ -1,21 +1,22 @@
 CREATE DATABASE printer_distributor;
-DROP DATABASE printer_distributor;
+#DROP DATABASE printer_distributor;
 USE printer_distributor;
 
 INSERT INTO bills(`date`,total) VALUES 
 ("2021-10-14",436000),
 ("2021-10-15",1012000),
-("2021-10-16",500000),
-("2021-10-17",400000),
-("2021-10-18",600000),
-("2021-10-19",700000),
-("2021-10-20",500000),
-("2021-10-21",200000),
-("2021-10-22",300000),
-("2021-10-23",600000),
-("2021-10-24",700000),
-("2021-10-25",200000),
-("2021-10-26",100000);
+("2021-10-16",436000),
+("2021-10-17",1012000),
+("2021-10-18",436000),
+("2021-10-19",1012000),
+("2021-10-20",436000),
+("2021-10-21",1012000),
+("2021-10-22",436000),
+("2021-10-23",1012000),
+("2021-10-24",436000),
+("2021-10-25",1012000),
+("2021-10-26",436000),
+("2021-10-27",1012000);
 
 INSERT INTO suppliers(is_presale,last_review,lead_time,`name`,phone_number,review_period) VALUES 
 (false,now(),7,"HP",4955555,10),
@@ -28,6 +29,15 @@ INSERT INTO products(avg_demand,cost_of_preparing,cost_unit,`description`,dis_de
 (6.0,1000,52000,"very fast impressions",3.0,"L4160 TINTA INAL",1,null, "00AA4",1,40,150,2),
 (2.0,500,37000,"smart and fast impressions",1.0,"Ecotank LL3210",1,null, "00AA5",1,50,150,2),
 (3.0,600,40000,"quality impressions",2.0,"Ecotank L3210",1,null, "00AA6",1,55,150,2);
+
+SELECT * FROM products;
+DESCRIBE products;
+ALTER TABLE products ADD COLUMN zone int;
+
+SELECT * FROM bills WHERE (SELECT max(id) from bills) = id;
+SELECT max(id) from bills;
+
+
 
 INSERT INTO sales(`date`,quantity,subtotal,id_product,id_bill) VALUES 
 ("2021-10-14",4,68000,1,1),
@@ -85,4 +95,6 @@ INSERT INTO sales(`date`,quantity,subtotal,id_product,id_bill) VALUES
 ("2021-10-27",12,624000,4,14),
 ("2021-10-27",4,148000,5,14),
 ("2021-10-27",6,240000,6,14);
+
+select * from products;
 
