@@ -186,9 +186,9 @@ public class ProductService {
     }
 
     public void updateProduct(Integer id, Product upd) {
-        Product p = getById(id);
+        //Product p = getById(id);
 
-        p.setScan(upd.getScan());
+        /*p.setScan(upd.getScan());
         p.setModel(upd.getModel());
         p.setDescription(upd.getDescription());
         p.setSupplier(upd.getSupplier());
@@ -198,7 +198,8 @@ public class ProductService {
         p.setServiceLevel(upd.getServiceLevel());
         p.setAvgDemand(upd.getAvgDemand());
         p.setDisDemand(upd.getAvgDemand());
-        p.setReorderPoint(upd.getReorderPoint());
-        productRepository.save(p);
+        p.setReorderPoint(upd.getReorderPoint());*/
+
+        productRepository.save(upd);
     }
 }
