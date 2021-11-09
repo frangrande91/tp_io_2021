@@ -1,5 +1,6 @@
 package com.utn.tp.io.model;
 
+import com.utn.tp.io.utils.BrownTable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -63,10 +64,13 @@ public class Product {
     public static Double calculateReorderPoint(Product product) {
         Double Q = Math.sqrt(((2*product.getAvgDemand()* product.getCostOfPreparing())/product.getStorageCost()));
         Double oL = Math.sqrt(product.getSupplier().getReviewPeriod()) * product.getDisDemand();
-        double eX = (1 - product.getServiceLevel())*(Q/oL);
-        double z = eX * (-1);
+        Double eX = (1 - product.getServiceLevel())*(Q/oL);
+        BrownTable brownTable = new BrownTable();
+        Double z = brownTable.calculateZeta(eX);
         return z;
     }
+
+
 
 
 

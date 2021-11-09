@@ -86,7 +86,8 @@ public class ProductService {
 
         double avgDemand = Sale.calculateAvgDemand(salesInLastDays, quantityDays);
         double disDemand = Sale.calculateDisDemand(salesInLastDays,avgDemand);
-        double reorderPoint = Product.calculateReorderPoint(product);
+        double reorderPoint = Product.calculateReorderPoint(product); //si es null lanzar exception
+
 
         product.setAvgDemand(avgDemand);
         product.setDisDemand(disDemand);
