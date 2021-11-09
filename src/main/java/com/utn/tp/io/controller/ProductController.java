@@ -3,6 +3,7 @@ package com.utn.tp.io.controller;
 import com.utn.tp.io.model.ModelType;
 import com.utn.tp.io.model.Product;
 import com.utn.tp.io.service.ProductService;
+import com.utn.tp.io.utils.BrownTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private BrownTable brownTable;
 
     @Autowired
     public ProductController(ProductService productService) {
@@ -94,6 +96,11 @@ public class ProductController {
     @GetMapping("/check/qmodel")
     public ResponseEntity<List<Product>> getToCheckModelQ(){
         return ResponseEntity.ok(productService.getToCheckModelQ());
+    }
+
+    @GetMapping("/getz/{ez}")
+    public ResponseEntity<Double> getz(@PathVariable Double ez){
+        return ResponseEntity.ok(this.brownTable.calculateZeta(ez));
     }
 
 }

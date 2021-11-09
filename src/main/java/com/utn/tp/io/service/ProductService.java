@@ -101,6 +101,7 @@ public class ProductService {
             product.setReorderPoint(reorderPoint);
 
             this.productRepository.save(product);
+            determinateZoneABC();
         }
 
 
@@ -130,7 +131,7 @@ public class ProductService {
 
         //Guardo en una lista a todos los productos que pertenecen a un proveedor que está en período de revisión
         for (Product p : this.getAll()) {
-            if (revisionSuppliers.contains(p.getSupplier())) {
+            if (p.getModelType() == ModelType.P_MODEL && revisionSuppliers.contains(p.getSupplier())) {
                 productsToCheck.add(p);
             }
         }
@@ -152,7 +153,7 @@ public class ProductService {
         //Calculo del CAV de cada producto y CAVA
         for(Product product : products){
             cava = cava + product.getCostUnit() * product.getAvgDemand();
-            cavPerProduct.put(product.getCostUnit() * product.getAvgDemand() * 300, product);   //Calculo CAV
+            cavPerProduct.put(product.getCostUnit() * product.getAvgDemand() * 365, product);   //Calculo CAV
         }
 
         //Calculo del porcentaje de cada producto sobre el CAVA
