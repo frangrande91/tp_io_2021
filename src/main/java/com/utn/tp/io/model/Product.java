@@ -64,11 +64,14 @@ public class Product {
     public static Double calculateReorderPoint(Product product) {
         if(product.modelType.equals(ModelType.Q_MODEL)) {
             Double Q = Math.sqrt(((2*product.getAvgDemand()* product.getCostOfPreparing())/product.getStorageCost()));
+            System.out.println("Q: "+Q);
             Double oL = Math.sqrt(product.getSupplier().getReviewPeriod()) * product.getDisDemand();
+            System.out.println("oL: "+oL);
             Double eX = (1 - product.getServiceLevel())*(Q/oL);
+            System.out.println("EX: "+eX);
             BrownTable brownTable = new BrownTable();
             Double z = brownTable.calculateZeta(eX);
-            return z;
+            return (product.getAvgDemand()*product.getSupplier().getLeadTime()) + (z*oL);
         }
         return null;
     }

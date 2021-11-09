@@ -48,8 +48,8 @@ public class BrownTable {
         Double maxKey = null;
         Double minKey = null;
 
-        if(zeta >= 0 && zeta <= 4.5) {
-            if (this.hash.containsKey(zeta)) {
+        if(zeta >= 0.0 && zeta <= 4.5) {
+            if (!this.hash.containsKey(zeta)) {
                 Iterator<Map.Entry<Double, Double>> iterator = hash.entrySet().iterator();
                 while (iterator.hasNext() && maxKey == null) {
                     Map.Entry<Double, Double> entry = iterator.next();
@@ -62,12 +62,17 @@ public class BrownTable {
                 }
 
                 //Comparo en cual de los 2 valores de E(z) hay menor diferencia
-                if ((maxKey - zeta) < (zeta - minKey))
+                if ((maxKey - zeta) < (zeta - minKey)) {
                     return hash.get(minKey);
-                else
+                }
+                else {
                     return hash.get(maxKey);
-            } else
+                }
+
+            } else {
                 return hash.get(zeta);
+            }
+
         }
         else
             return null;

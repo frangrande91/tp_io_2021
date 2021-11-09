@@ -2,6 +2,16 @@ CREATE DATABASE printer_distributor;
 #DROP DATABASE printer_distributor;
 USE printer_distributor;
 
+DELETE FROM bills WHERE id >= 1;
+DELETE FROM suppliers WHERE id >= 1;
+DELETE FROM products WHERE id_product >= 1;
+DELETE FROM sales WHERE id >= 1;
+
+SELECT * FROM bills;
+SELECT * FROM suppliers;
+SELECT * FROM products;
+SELECT * FROM sales;
+
 INSERT INTO bills(`date`,total) VALUES 
 ("2021-10-14",436000),
 ("2021-10-15",1012000),
@@ -30,14 +40,8 @@ INSERT INTO products(avg_demand,cost_of_preparing,cost_unit,`description`,dis_de
 (2.0,500,37000,"smart and fast impressions",1.0,"Ecotank LL3210",1,null, "00AA5",1,50,150,2),
 (3.0,600,40000,"quality impressions",2.0,"Ecotank L3210",1,null, "00AA6",1,55,150,2);
 
-SELECT * FROM products;
-DESCRIBE products;
-ALTER TABLE products ADD COLUMN zone int;
-
-SELECT * FROM bills WHERE (SELECT max(id) from bills) = id;
-SELECT max(id) from bills;
-
-
+select * from products;
+select * from bills;
 
 INSERT INTO sales(`date`,quantity,subtotal,id_product,id_bill) VALUES 
 ("2021-10-14",4,68000,1,1),

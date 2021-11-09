@@ -26,6 +26,8 @@ import java.util.List;
 
 import java.util.*;
 
+import static java.util.Objects.isNull;
+
 
 @Service
 public class ProductService {
@@ -94,7 +96,13 @@ public class ProductService {
                 reorderPoint = Product.calculateReorderPoint(product); //si es null lanzar exception
             }
 
-            System.out.println("Reorden point:"+product.getReorderPoint());
+            if(reorderPoint < 0) {
+                reorderPoint = reorderPoint * (-1);
+            }
+
+            System.out.println("DEMAND AVG:"+avgDemand);
+            System.out.println("DIS AVG:"+disDemand);
+            System.out.println("REORDER POINT:"+reorderPoint);
 
             product.setAvgDemand(avgDemand);
             product.setDisDemand(disDemand);
@@ -220,8 +228,10 @@ public class ProductService {
         List<Product> toOrder = new ArrayList<>();
 
         for(Product p : this.getAll()){
-            if (p.getStock() <= p.getReorderPoint()){
-                toOrder.add(p);
+            if(!isNull(p.getReorderPoint())) {
+                if (p.getStock() <= p.getReorderPoint()){
+                    toOrder.add(p);
+                }
             }
         }
         return toOrder;
