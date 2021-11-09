@@ -107,7 +107,7 @@ public class ProductService {
     }
 
 
-    public List<Product> getToCheck() {
+    public List<Product> getToCheckModelP() {
         List<Supplier> revisionSuppliers = new ArrayList<Supplier>();
         List<Product> productsToCheck = new ArrayList<>();
 
@@ -202,5 +202,17 @@ public class ProductService {
         p.setReorderPoint(upd.getReorderPoint());*/
 
         productRepository.save(upd);
+    }
+
+    public List<Product> getToCheckModelQ() {
+
+        List<Product> toOrder = new ArrayList<>();
+
+        for(Product p : this.getAll()){
+            if (p.getStock() <= p.getReorderPoint()){
+                toOrder.add(p);
+            }
+        }
+        return toOrder;
     }
 }

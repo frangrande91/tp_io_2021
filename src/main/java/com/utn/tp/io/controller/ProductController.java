@@ -69,9 +69,9 @@ public class ProductController {
     }
 
     @GetMapping("/suggestModel/{id}")
-    public ResponseEntity<Object> suggestedModel(@PathVariable Integer id){
-        productService.suggestedModel(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ModelType> suggestedModel(@PathVariable Integer id){
+        ModelType m = productService.suggestedModel(id);
+        return ResponseEntity.ok(m);
     }
 
     @PutMapping("/{id}")
@@ -86,9 +86,14 @@ public class ProductController {
     }
 
     //Retorna una lista de los productos que están en periodo de revision
-    @GetMapping("/check")
-    public ResponseEntity<List<Product>> getToCheck(){
-        return ResponseEntity.ok(productService.getToCheck());
+    @GetMapping("/check/pmodel")
+    public ResponseEntity<List<Product>> getToCheckModelP(){
+        return ResponseEntity.ok(productService.getToCheckModelP());
+    }
+
+    @GetMapping("/check/qmodel")
+    public ResponseEntity<List<Product>> getToCheckModelQ(){
+        return ResponseEntity.ok(productService.getToCheckModelQ());
     }
 
 }
