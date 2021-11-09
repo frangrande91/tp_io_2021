@@ -42,7 +42,7 @@ public class Sale {
 
     public static Double calculateAvgDemand(List<Sale> saleList, Integer quantityDays ) {
         double totalDemand = 0.0;
-
+        System.out.println("Longitud: "+saleList.size());
         for(Sale s : saleList) {
             totalDemand += s.getQuantity();
         }

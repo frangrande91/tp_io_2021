@@ -62,12 +62,15 @@ public class Product {
     private ZoneProduct zone;
 
     public static Double calculateReorderPoint(Product product) {
-        Double Q = Math.sqrt(((2*product.getAvgDemand()* product.getCostOfPreparing())/product.getStorageCost()));
-        Double oL = Math.sqrt(product.getSupplier().getReviewPeriod()) * product.getDisDemand();
-        Double eX = (1 - product.getServiceLevel())*(Q/oL);
-        BrownTable brownTable = new BrownTable();
-        Double z = brownTable.calculateZeta(eX);
-        return z;
+        if(product.modelType.equals(ModelType.Q_MODEL)) {
+            Double Q = Math.sqrt(((2*product.getAvgDemand()* product.getCostOfPreparing())/product.getStorageCost()));
+            Double oL = Math.sqrt(product.getSupplier().getReviewPeriod()) * product.getDisDemand();
+            Double eX = (1 - product.getServiceLevel())*(Q/oL);
+            BrownTable brownTable = new BrownTable();
+            Double z = brownTable.calculateZeta(eX);
+            return z;
+        }
+        return null;
     }
 
 

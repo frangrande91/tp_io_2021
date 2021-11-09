@@ -76,24 +76,34 @@ public class ProductService {
         Product product = getByScan(scan);
 
         /*Calcula la fecha de hoy*/
-        Date from = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date to = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         /*Calcula la fecha de hace 30 días*/
-        Date to = Date.from(LocalDate.now().minusDays(quantityDays).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date from = Date.from(LocalDate.now().minusDays(quantityDays).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         /* Obtengo las ventas de los ultimos 30 días del producto*/
         List<Sale> salesInLastDays = saleService.getBetweenDatesAndProduct(from,to,product);
-
-        double avgDemand = Sale.calculateAvgDemand(salesInLastDays, quantityDays);
-        double disDemand = Sale.calculateDisDemand(salesInLastDays,avgDemand);
-        double reorderPoint = Product.calculateReorderPoint(product); //si es null lanzar exception
+        if(salesInLastDays.size() > 0) {
+            double avgDemand = Sale.calculateAvgDemand(salesInLastDays, quantityDays);
 
 
-        product.setAvgDemand(avgDemand);
-        product.setDisDemand(disDemand);
-        product.setReorderPoint(reorderPoint);
+            double disDemand = Sale.calculateDisDemand(salesInLastDays,avgDemand);
+            Double reorderPoint = null;
 
-        this.productRepository.save(product);
+            if(product.getModelType().equals(ModelType.Q_MODEL)) {
+                reorderPoint = Product.calculateReorderPoint(product); //si es null lanzar exception
+            }
+
+            System.out.println("Reorden point:"+product.getReorderPoint());
+
+            product.setAvgDemand(avgDemand);
+            product.setDisDemand(disDemand);
+            product.setReorderPoint(reorderPoint);
+
+            this.productRepository.save(product);
+        }
+
+
     }
 
     public List<Product> getBySupplier(Integer idSupplier){
